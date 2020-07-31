@@ -32,8 +32,6 @@ public class UserController {
 	public UserController(UserService userServ) {
 		this.userServ = userServ;
 	}
-	@Autowired
-	private UserValidator userValidator;
 	
 	@GetMapping()
 	public Iterable<UserEntity> displayUsers(
@@ -56,8 +54,8 @@ public class UserController {
 	}
 	@PutMapping( consumes = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE},
 			produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE},path="/{userId}")
-	public UserResponse updateUser(@RequestBody UserEntity userEntity) {
-		return userServ.updateUser(userEntity);
+	public UserResponse updateUser(@RequestBody UserEntity userEntity,@PathVariable Long userId) {
+		return userServ.updateUser(userEntity,userId);
 	}
 	
 	@GetMapping(path="/{userId}")

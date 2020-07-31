@@ -83,12 +83,18 @@ public class UserServiceImplementation implements UserService{
 
 
 	@Override
-	public UserResponse updateUser(UserEntity userEntity) {
+	public UserResponse updateUser(UserEntity userEntity, Long id) {
 		UserResponse currentUser = new UserResponse();
-		if(userRepository.findById(userEntity.getId()).isPresent()) {
-			System.out.println(userEntity);
-			userRepository.save(userEntity);
-			BeanUtils.copyProperties(userEntity, currentUser);
+		UserEntity user = userRepository.findById(id)
+				.orElseThrow(()-> new ResourceNotFoundException("User id not found"));
+		if(userRepository.findById(id).isPresent()) {
+			user.setFirstName(userEntity.getFirstName());
+			user.setLastName(userEntity.getLastName());
+			user.setEmail(userEntity.getEmail());
+			user.setPassword(userEntity.getPassword());
+			user.setPasswordConfirmation(userEntity.getPasswordConfirmation());
+			userRepository.save(user);
+			BeanUtils.copyProperties(user, currentUser);
 			return currentUser;
 		}
 		
