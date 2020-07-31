@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import com.teksystems.TekcampExerciseSpring.Exception.ResourceNotFoundException;
 import com.teksystems.TekcampExerciseSpring.Models.UserEntity;
 import com.teksystems.TekcampExerciseSpring.Models.Response.UserResponse;
 import com.teksystems.TekcampExerciseSpring.Repositories.UserRepository;
@@ -66,7 +67,8 @@ public class UserServiceImplementation implements UserService{
 
 	@Override
 	public Optional<UserEntity> findById(Long userId) {
-		return userRepository.findById(userId);
+		return Optional.ofNullable(userRepository.findById(userId)
+				.orElseThrow(()-> new ResourceNotFoundException("User id not found")));
 		
 	}
 
@@ -74,7 +76,8 @@ public class UserServiceImplementation implements UserService{
 
 	@Override
 	public Optional<UserEntity> getUserByEmail(String email) {
-		return userRepository.findByEmail(email);
+		return Optional.ofNullable(userRepository.findByEmail(email)
+				.orElseThrow(()-> new ResourceNotFoundException("User email not found")));
 	}
 
 

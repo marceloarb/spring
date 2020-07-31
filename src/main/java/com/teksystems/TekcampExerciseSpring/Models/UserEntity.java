@@ -11,6 +11,8 @@ import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name="users")
@@ -19,9 +21,11 @@ public class UserEntity {
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
 	private String userId;
+	@NotNull(message = "First name cannot be null")
 	private String firstName;
+	@NotNull(message = "Last name cannot be null")
 	private String lastName;
-	@Column(unique = true)
+	@Email(message = "Email should be valid")
     private String email;
     private String password;
     @Transient
